@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamale Fire Station · Operational Command</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="assets/images/gnfs-logo.png">
+
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Project Stylesheets -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- LOGIN VIEW                                                    -->
+<!-- ============================================================ -->
+<div class="login-container" id="loginView">
+  <div class="login-header">
+   <div class="logo-icon" style="background:none; box-shadow:none;">
+  <img src="assets/images/gnfs-logo.png" alt="GNFS" style="width:80px;height:80px;object-fit:contain;">
+</div>
+    <h1>GNFS Command</h1>
+    <p>Ghana National Fire Service</p>
+    <div class="service-tag">
+      <i class="fas fa-shield-hal"></i> Tamale Fire Station · Operational
+    </div>
+  </div>
+
+  <form id="loginForm" autocomplete="off">
+    <div class="input-group">
+      <i class="fas fa-user-cog"></i>
+      <input type="text" id="adminId" placeholder="Administrator ID" value="GNFS-ADMIN" required>
+    </div>
+    <div class="input-group">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="adminPass" placeholder="Password" value="ghana2024" required>
+    </div>
+    <button type="submit" class="btn-login">
+      <i class="fas fa-arrow-right-to-bracket"></i> Access Command Panel
+    </button>
+  </form>
+
+  <div class="login-footer">
+    <i class="fas fa-lock"></i> Authorized personnel only · GNFS-ADMIN / ghana2024
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DASHBOARD VIEW                                                -->
+<!-- ============================================================ -->
+<div class="dashboard-container" id="dashboardView">
+
+  <!-- TOP COMMAND BAR -->
+  <div class="dashboard-header">
+    <div class="station-id">
+      <div class="station-icon" style="background:none; box-shadow:none;">
+  <img src="assets/images/gnfs-logo.png" alt="GNFS" style="width:56px;height:56px;object-fit:contain;">
+</div>
+      <div>
+        <h2>Tamale Fire Station</h2>
+        <p class="station-sub">Operational Unit · Northern Region</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="live-clock" id="liveClock">
+        <i class="fas fa-clock"></i>
+        <span id="clockTime">--:--:--</span>
+      </div>
+      <div class="admin-badge">
+        <i class="fas fa-user-shield"></i>
+        <span id="adminDisplay">GNFS-ADMIN</span>
+      </div>
+      <button class="icon-btn" id="themeToggleBtn" type="button" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="logout-btn" id="logoutBtn" type="button">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stats-grid">
+    <div class="stat-card stat-total">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-body">
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">Total Crew</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-onduty">
+      <div class="stat-icon"><i class="fas fa-fire"></i></div>
+      <div class="stat-body">
+        <div class="stat-value" id="statOnDuty">0</div>
+        <div class="stat-label">On Duty</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-standby">
+      <div class="stat-icon"><i class="fas fa-stopwatch"></i></div>
+      <div class="stat-body">
+        <div class="stat-value" id="statStandby">0</div>
+        <div class="stat-label">Standby</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-rest">
+      <div class="stat-icon"><i class="fas fa-bed"></i></div>
+      <div class="stat-body">
+        <div class="stat-value" id="statRest">0</div>
+        <div class="stat-label">Rest Day</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-leave">
+      <div class="stat-icon"><i class="fas fa-plane-departure"></i></div>
+      <div class="stat-body">
+        <div class="stat-value" id="statLeave">0</div>
+        <div class="stat-label">On Leave</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="search-panel">
+    <div class="search-title">
+      <i class="fas fa-filter"></i> Filters
+    </div>
+
+    <div class="search-box">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="text" id="searchInput"
+             placeholder="Search name, staff ID, service no..."
+             autocomplete="off">
+      <button type="button" class="clear-search" id="clearSearchBtn" title="Clear search">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+
+    <select class="filter-select" id="filterWatch" title="Filter by watch">
+      <option value="all">All Watches</option>
+      <option value="A Watch">🔴 A Watch</option>
+      <option value="B Watch">🔵 B Watch</option>
+      <option value="C Watch">🟢 C Watch</option>
+      <option value="D Watch">🟡 D Watch</option>
+    </select>
+
+    <select class="filter-select" id="filterRole" title="Filter by role">
+      <option value="all">All Roles</option>
+      <option>Incident Commander</option>
+      <option>Crew Commander</option>
+      <option>Pump Operator</option>
+      <option>BA Wearer</option>
+      <option>Driver</option>
+      <option>Rescue Technician</option>
+      <option>First Aider</option>
+      <option>Firefighter</option>
+      <option>Watch Room Operator</option>
+    </select>
+
+    <select class="filter-select" id="filterStatus" title="Filter by status">
+      <option value="all">All Statuses</option>
+      <option>On Duty</option>
+      <option>Standby</option>
+      <option>Rest Day</option>
+      <option>Training</option>
+      <option>On Leave</option>
+      <option>Sick</option>
+      <option>Deployed</option>
+    </select>
+
+    <div class="search-results-info">
+      <i class="fas fa-list"></i>
+      <span id="searchResultsCount">0</span> shown
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-bar">
+    <button class="btn-submit" id="addCrewBtn" type="button">
+      <i class="fas fa-user-plus"></i> Add Crew Member
+    </button>
+    <button class="btn-export" id="exportBtn" type="button">
+      <i class="fas fa-file-csv"></i> Export CSV
+    </button>
+    <button class="btn-pdf" id="exportPdfBtn" type="button">
+      <i class="fas fa-file-pdf"></i> Export PDF
+    </button>
+    <button class="btn-secondary" id="printBtn" type="button">
+      <i class="fas fa-print"></i> Print Roster
+    </button>
+    <button class="btn-bulk-delete" id="bulkDeleteBtn" type="button" disabled>
+      <i class="fas fa-trash-can"></i> Delete Selected (<span id="selectedCount">0</span>)
+    </button>
+    <button class="btn-archive" id="archiveBtn" type="button">
+      <i class="fas fa-clock-rotate-left"></i> Archive
+      <span class="archive-badge" id="archiveBadge">0</span>
+    </button>
+  </div>
+
+  <!-- RECORDS TABLE -->
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:42px;text-align:center;">
+            <input type="checkbox" id="selectAllCheckbox" class="row-checkbox"
+                   title="Select all visible crew">
+          </th>
+          <th style="width:58px;">PHOTO</th>
+          <th data-sort="no" class="sortable">
+            NO <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="staffId" class="sortable">
+            STAFF ID <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="rank" class="sortable">
+            RANK <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="name" class="sortable">
+            NAME <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="watch" class="sortable">
+            WATCH <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="role" class="sortable">
+            ROLE <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="status" class="sortable">
+            STATUS <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th data-sort="appliance" class="sortable">
+            APPLIANCE <i class="fas fa-sort sort-icon"></i>
+          </th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Rows injected by JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION + FOOTER -->
+  <div class="table-footer">
+    <div class="footer-left">
+      <i class="fas fa-users"></i>
+      <span id="recordCount">0</span> records
+      <span class="footer-divider">·</span>
+      <i class="fas fa-clock"></i>
+      <span id="lastUpdated">--</span>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL — Add / Edit crew                                       -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" role="dialog" aria-modal="true">
+
+    <div class="modal-header">
+      <h3 id="modalTitle">
+        <i class="fas fa-user-plus"></i> Add Crew Member
+      </h3>
+      <button class="modal-close" id="modalCloseBtn" type="button" title="Close">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="modalForm" class="modal-form" autocomplete="off">
+      <input type="hidden" id="modalMode" value="add">
+      <input type="hidden" id="modalOriginalId" value="">
+
+      <!-- PHOTO UPLOAD ROW -->
+      <div class="photo-upload-row">
+        <div class="photo-preview-wrap">
+          <div class="photo-preview" id="photoPreview">
+            <i class="fas fa-user"></i>
+          </div>
+          <label class="photo-upload-btn" for="photoInput" title="Upload photo">
+            <i class="fas fa-camera"></i>
+          </label>
+          <button type="button" class="photo-remove-btn" id="photoRemoveBtn" title="Remove photo">
+            <i class="fas fa-xmark"></i>
+          </button>
+          <input type="file" id="photoInput" accept="image/*" style="display:none;">
+        </div>
+        <div class="photo-hint">
+          <strong>Member Photo</strong>
+          <span>Optional · Auto-resized to 200×200 · Max 2MB</span>
+        </div>
+      </div>
+
+      <div class="modal-grid">
+
+  <div class="field">
+    <label for="mStaffId">STAFF ID *</label>
+    <input type="text" id="mStaffId" placeholder="e.g. STF-1009" required>
+  </div>
+
+  <div class="field">
+    <label for="mServiceNo">SERVICE NO *</label>
+    <input type="text" id="mServiceNo" placeholder="e.g. GNFS/SN-12345" required>
+  </div>
+
+  <div class="field">
+    <label for="mRank">RANK</label>
+    <select id="mRank">
+      <option></option>
+      <option>Divisional Officer I (DOI)</option>
+      <option>Divisional Officer II (DOII)</option>
+      <option>Divisional Officer III (DOIII)</option>
+      <option>Assistant Divisional Officer I (ADOI)</option>
+      <option>Assistant Divisional Officer II (ADOII)</option>
+      <option>Station Officer I (STNOI)</option>
+      <option>Station Officer II (STNOII)</option>
+      <option>Assistant Station Officer I (ASTNO)</option>
+      <option>Subordinate Officer I (SO)</option>
+      <option>Leading Fire Man/Woman (LFM/LFW)</option>
+      <option>Fire Man/Woman (FM/FW)</option>
+      <option>Recruitee Fire Man/Woman (RFM/RFW)</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mName">NAME *</label>
+    <input type="text" id="mName" placeholder="e.g. Kwame Mensah" required>
+  </div>
+
+  <div class="field">
+    <label for="mGender">GENDER</label>
+    <select id="mGender">
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mWatch">WATCH</label>
+    <select id="mWatch">
+      <option>A Watch</option>
+      <option>B Watch</option>
+      <option>C Watch</option>
+      <option>D Watch</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mRole">CREW ROLE</label>
+    <select id="mRole">
+      <option>Firefighter</option>
+      <option>Incident Commander</option>
+      <option>Crew Commander</option>
+      <option>Pump Operator</option>
+      <option>BA Wearer</option>
+      <option>Driver</option>
+      <option>Rescue Technician</option>
+      <option>First Aider</option>
+      <option>Watch Room Operator</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mStatus">STATUS</label>
+    <select id="mStatus">
+      <option>On Duty</option>
+      <option>Standby</option>
+      <option>Rest Day</option>
+      <option>Training</option>
+      <option>On Leave</option>
+      <option>Sick</option>
+      <option>Deployed</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mAppliance">APPLIANCE</label>
+    <select id="mAppliance">
+      <option>Pump 1</option>
+      <option>Pump 2</option>
+      <option>Ladder</option>
+      <option>Rescue</option>
+      <option>Unassigned</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mSchedule">SHIFT</label>
+    <select id="mSchedule">
+      <option>Morning (06:00-14:00)</option>
+      <option>Afternoon (14:00-22:00)</option>
+      <option>Night (22:00-06:00)</option>
+      <option>24-Hour Shift</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="mPhone">PHONE</label>
+    <input type="text" id="mPhone" placeholder="+233 24 123 4567">
+  </div>
+
+  <div class="field">
+    <label for="mDateJoined">DATE JOINED</label>
+    <input type="date" id="mDateJoined">
+  </div>
+
+</div>
+
+<div class="modal-actions">
+  <button type="button" class="btn-secondary" id="modalCancelBtn">Cancel</button>
+  <button type="submit" class="btn-submit" id="modalSaveBtn">
+    <i class="fas fa-floppy-disk"></i> Save
+  </button>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL — Archive (Activity Log)                                -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="archiveOverlay">
+  <div class="modal-box archive-modal-box" role="dialog" aria-modal="true">
+
+    <div class="modal-header">
+      <h3>
+        <i class="fas fa-clock-rotate-left"></i> Activity Archive
+      </h3>
+      <button class="modal-close" id="archiveCloseBtn" type="button" title="Close">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="archive-toolbar">
+      <div class="archive-search-box">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" id="archiveSearchInput"
+               placeholder="Search name or staff ID..."
+               autocomplete="off">
+      </div>
+      <select class="filter-select" id="archiveFilter">
+        <option value="all">All Actions</option>
+        <option value="added">➕ Added</option>
+        <option value="edited">✏️ Edited</option>
+        <option value="deleted">🗑 Deleted</option>
+        <option value="restored">♻️ Restored</option>
+      </select>
+      <div class="search-results-info">
+        <i class="fas fa-list"></i>
+        <span id="archiveCount">0</span> entries
+      </div>
+    </div>
+
+    <div class="archive-list" id="archiveList">
+      <!-- Entries injected by JavaScript -->
+    </div>
+
+    <div class="archive-footer">
+      <button class="btn-secondary" id="archiveExportBtn" type="button">
+        <i class="fas fa-file-csv"></i> Export Archive CSV
+      </button>
+      <button class="btn-danger" id="archiveClearBtn" type="button">
+        <i class="fas fa-trash-can"></i> Clear Archive
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CONFIRM MODAL — for double-confirm bulk delete                -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="confirmOverlay">
+  <div class="modal-box confirm-modal-box" role="dialog" aria-modal="true">
+
+    <div class="modal-header">
+      <h3>
+        <i class="fas fa-triangle-exclamation" style="color:#c0392b;"></i>
+        Confirm Bulk Delete
+      </h3>
+      <button class="modal-close" id="confirmCloseBtn" type="button" title="Close">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="confirm-body">
+      <p class="confirm-warning">
+        You are about to permanently delete
+        <strong id="confirmCount">0</strong> crew member(s):
+      </p>
+      <ul class="confirm-list" id="confirmList"></ul>
+      <p class="confirm-instruction">
+        This action cannot be undone. Type <strong>DELETE</strong> below to confirm:
+      </p>
+      <input type="text" id="confirmInput" placeholder="Type DELETE to confirm"
+             autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" id="confirmCancelBtn">Cancel</button>
+      <button type="button" class="btn-danger" id="confirmDeleteBtn" disabled>
+        <i class="fas fa-trash-can"></i> Delete Permanently
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TOAST                                                         -->
+<!-- ============================================================ -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMessage">Operation successful</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- PDF LIBRARIES                                                 -->
+<!-- ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+
+<!-- ============================================================ -->
+<!-- APPLICATION SCRIPTS                                           -->
+<!-- ============================================================ -->
+<script src="js/database.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/search.js"></script>
+<script src="js/export.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
